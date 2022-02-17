@@ -1,2 +1,3 @@
 # js-playground
-dd
+Some single page applications written in Javasript
+
