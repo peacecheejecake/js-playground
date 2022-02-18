@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./app.js"></script>
+    <title>Painter</title>
+  </head>
+  <body>
+    <div class="canvas-wrapper">
+      <div class="control__range">
+        <input type="range" class="range" min="0.1" max="5" step="0.1" />
+      </div>
+      <canvas class="canvas"></canvas>
+      <div class="control__colors">
+        <div
+          class="control__color color"
+          style="background-color: #2c2c2c"
+        ></div>
+        <div class="control__color color" style="background-color: white"></div>
+        <div
+          class="control__color color"
+          style="background-color: #ff3b30"
+        ></div>
+        <div
+          class="control__color color"
+          style="background-color: #ff9500"
+        ></div>
+        <div
+          class="control__color color"
+          style="background-color: #ffcc00"
+        ></div>
+        <div
+          class="control__color color"
+          style="background-color: #4cd963"
+        ></div>
+        <div
+          class="control__color color"
+          style="background-color: #5ac8fa"
+        ></div>
+        <div
+          class="control__color color"
+          style="background-color: #0579ff"
+        ></div>
+        <div
+          class="control__color color"
+          style="background-color: #5856d6"
+        ></div>
+      </div>
+    </div>
+    <div class="control__btns">
+      <button class="btnMode">Fill</button>
+      <button class="btnSave">Save</button>
+    </div>
+  </body>
+</html>
