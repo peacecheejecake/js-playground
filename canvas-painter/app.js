@@ -12,7 +12,6 @@ const COLOR_DEFAULT = "#2c2c2c";
 const DEFAULT_BACKGROUND_COLOR = "#ffffff";
 
 let painting = false;
-let filling = false;
 let color = COLOR_DEFAULT;
 
 lineWidthControl.value = LINE_WIDTH_DEFAULT;
@@ -35,17 +34,13 @@ function stopPainting() {
 }
 
 function startPainting(event) {
-  if (filling) {
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  } else {
-    const x = event.offsetX;
-    const y = event.offsetY;
+  const x = event.offsetX;
+  const y = event.offsetY;
 
-    ctx.beginPath();
-    ctx.moveTo(x, y);
+  ctx.beginPath();
+  ctx.moveTo(x, y);
 
-    painting = true;
-  }
+  painting = true;
 }
 
 function draw(event) {
@@ -58,6 +53,10 @@ function draw(event) {
   }
 }
 
+function fill(event) {
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 function changeLineWidth(event) {
   ctx.lineWidth = event.target.value;
 }
@@ -66,15 +65,6 @@ function changeColor(event) {
   color = event.target.style.backgroundColor;
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
-}
-
-function toggleMode(event) {
-  if (filling) {
-    event.target.innerText = "FILL";
-  } else {
-    event.target.innerText = "DRAW";
-  }
-  filling = !filling;
 }
 
 function save() {
@@ -94,5 +84,5 @@ lineWidthControl.addEventListener("input", changeLineWidth);
   color.addEventListener("click", changeColor);
 });
 
-btnMode.addEventListener("click", toggleMode);
+btnMode.addEventListener("click", fill);
 btnSave.addEventListener("click", save);
