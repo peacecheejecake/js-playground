@@ -98,16 +98,12 @@ class Ball {
     this.index = index;
 
     this.ctx = ctx;
-    this.canvasSize = new Vector(
-      this.ctx.canvas.width,
-      this.ctx.canvas.height,
-    );
+    this.canvasSize = new Vector(this.ctx.canvas.width, this.ctx.canvas.height);
 
     this.options = options;
 
     this.radius = options.radius ?? this.getRandomSize();
-    this.center =
-      options.center ?? this.getRandomPosition(this.radius);
+    this.center = options.center ?? this.getRandomPosition(this.radius);
     [this.speed, this.direction] = this.getRandomVelocityInPolar();
 
     this.fillColor = options.fillColor ?? this.getRandomColor();
@@ -157,11 +153,7 @@ class Ball {
       this.options.max_speed,
       false,
     );
-    const direction = this.generateBoundedRandom(
-      0,
-      Math.PI * 2,
-      false,
-    );
+    const direction = this.generateBoundedRandom(0, Math.PI * 2, false);
     return [speed, direction];
   }
 
@@ -260,8 +252,7 @@ class Ball {
 
   collideWithBall(other) {
     const gamma = Math.atan(
-      (this.center[0] - other.center[0]) /
-        (other.center[1] - this.center[1]),
+      (this.center[0] - other.center[0]) / (other.center[1] - this.center[1]),
     );
     this.collide(gamma, other.center);
     this.speed = other.speed;
@@ -298,9 +289,7 @@ class BallLayerController extends LayerController {
 
   initDistances() {
     this.distances = [...Array(this.numBalls)].map((_, i) =>
-      [...Array(i)].map((_, j) =>
-        this.balls[i].getDistanceFrom(this.balls[j]),
-      ),
+      [...Array(i)].map((_, j) => this.balls[i].getDistanceFrom(this.balls[j])),
     );
   }
 
@@ -315,8 +304,7 @@ class BallLayerController extends LayerController {
   applyCollisions() {
     this.distances.forEach((distancesRow, i) => {
       distancesRow.forEach((distance, j) => {
-        const diff =
-          this.balls[i].radius + this.balls[j].radius - distance;
+        const diff = this.balls[i].radius + this.balls[j].radius - distance;
         if (diff > -5 && diff < 100) {
           this.balls[i].collideWithBall(this.balls[j]);
           this.balls[j].collideWithBall(this.balls[i]);
