@@ -38,6 +38,7 @@ input.range {
   display: flex;
   flex-direction: column;
   margin-left: 50px;
+  align-items: center;
 }
 
 .control__btns button {

@@ -1,6 +1,6 @@
 const canvas = document.querySelector("canvas.canvas");
 const lineWidthControl = document.querySelector("input.range");
-const colorControls = document.querySelectorAll(".color");
+const colorControls = [...document.querySelectorAll(".color")];
 const btnMode = document.querySelector(".btnMode");
 const btnSave = document.querySelector(".btnSave");
 
@@ -8,22 +8,23 @@ const ctx = canvas.getContext("2d");
 
 //init
 const LINE_WIDTH_DEFAULT = 1;
-const COLOR_DEFAULT = "#2c2c2c";
-const DEFAULT_BACKGROUND_COLOR = "#ffffff";
+const COLOR_DEFAULT = colorControls[0].style.backgroundColor;
+const DEFAULT_BACKGROUND_COLOR = COLOR_DEFAULT;
+const currentColorBorderStyle = "5px solid #9c9c9c";
 
 let painting = false;
-let filling = false;
-let color = COLOR_DEFAULT;
+let currentColorControl = colorControls[0];
 
 lineWidthControl.value = LINE_WIDTH_DEFAULT;
+currentColorControl.style.border = currentColorBorderStyle;
 
 // pixel manipulating size
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
 
 // initial setup
-ctx.fillStyle = DEFAULT_BACKGROUND_COLOR;
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height); // initially white canvas
 
 ctx.lineWidth = `${LINE_WIDTH_DEFAULT}px`;
 ctx.strokeStyle = COLOR_DEFAULT;
@@ -35,17 +36,13 @@ function stopPainting() {
 }
 
 function startPainting(event) {
-  if (filling) {
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  } else {
-    const x = event.offsetX;
-    const y = event.offsetY;
+  const x = event.offsetX;
+  const y = event.offsetY;
 
-    ctx.beginPath();
-    ctx.moveTo(x, y);
+  ctx.beginPath();
+  ctx.moveTo(x, y);
 
-    painting = true;
-  }
+  painting = true;
 }
 
 function draw(event) {
@@ -58,23 +55,22 @@ function draw(event) {
   }
 }
 
+function fill(event) {
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 function changeLineWidth(event) {
   ctx.lineWidth = event.target.value;
 }
 
 function changeColor(event) {
-  color = event.target.style.backgroundColor;
+  currentColorControl.style.border = "none";
+  currentColorControl = event.target;
+  currentColorControl.style.border = currentColorBorderStyle;
+
+  const color = currentColorControl.style.backgroundColor;
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
-}
-
-function toggleMode(event) {
-  if (filling) {
-    event.target.innerText = "FILL";
-  } else {
-    event.target.innerText = "DRAW";
-  }
-  filling = !filling;
 }
 
 function save() {
@@ -84,15 +80,20 @@ function save() {
   link.click();
 }
 
+function preventRightClick(event) {
+  event.preventDefault();
+}
+
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopPainting);
 canvas.addEventListener("mouseleave", stopPainting);
+canvas.addEventListener("click", preventRightClick);
 
 lineWidthControl.addEventListener("input", changeLineWidth);
-[...colorControls].forEach((color) => {
+colorControls.forEach((color) => {
   color.addEventListener("click", changeColor);
 });
 
-btnMode.addEventListener("click", toggleMode);
+btnMode.addEventListener("click", fill);
 btnSave.addEventListener("click", save);
